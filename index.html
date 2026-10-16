@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery - With Upload</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">PhotoGallery</a>
+        <ul class="nav-links">
+          <li><a href="#gallery" class="active">Gallery</a></li>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#upload">Upload</a></li>
+        </ul>
+        <div class="theme-toggle" id="themeToggle">
+          <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v2M12 23v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M23 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <path d="M12 1v6M12 23v6M18 12h6M5 12h6M12 4h12a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
+          </svg>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero" id="gallery">
+      <div class="container">
+        <div class="hero-content">
+          <span class="hero-badge">Photo Gallery</span>
+          <h1>Welcome to the <br>Sample Gallery</h1>
+          <p class="hero-description">A responsive photo gallery with upload capability. Click any image to see it in full view.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="galleryGrid">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Featured Photos</span>
+          <h2>Our Collection</h2>
+        </div>
+        <div class="gallery-upload-bar">
+          <div class="upload-input-wrapper">
+            <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+            <button class="upload-btn" onclick="document.getElementById('photoUpload').click()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15l3-3L12 3l-3 3z"></path>
+              </svg>
+              <span>Add Photo</span>
+            </button>
+          </div>
+          <span class="upload-hint">JPG, PNG, up to 10MB</span>
+        </div>
+        <div class="gallery-grid" id="grid">
+          <!-- Images will be rendered by JavaScript -->
+          <div class="empty-state" id="emptyState">
+            <p>Loading gallery...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="upload-section" id="upload">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Upload Photo</span>
+          <h2>Add to Collection</h2>
+        </div>
+        <div class="upload-box">
+          <input type="file" id="fileInput" accept="image/*" hidden>
+          <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15l3-3L12 3l-3 3z"></path>
+            </svg>
+            <span>Select Image</span>
+          </button>
+          <p class="upload-instruction">or drag and drop an image here</p>
+          <div class="drop-zone" id="dropZone">
+            <p>Click or drag images here</p>
+            <p>JPG, PNG, max 10MB</p>
+          </div>
+          <div class="preview-area" id="previewArea">
+            <!-- Preview will appear here -->
+          </div>
+          <div class="upload-actions">
+            <button class="btn-cancel" onclick="cancelUpload()">Cancel</button>
+            <button class="btn-save" onclick="saveImage()">Save to Gallery</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" id="categories">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Categories</span>
+          <h2>Filter by Category</h2>
+        </div>
+        <div class="categories-grid">
+          <button class="category-btn active" data-category="all">All</button>
+          <button class="category-btn" data-category="nature">Nature</button>
+          <button class="category-btn" data-category="city">City</button>
+          <button class="category-btn" data-category="portrait">Portrait</button>
+          <button class="category-btn" data-category="abstract">Abstract</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="lightbox" id="lightbox" style="display: none;">
+    <div class="lightbox-content">
+      <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+      <img id="lightboxImage" src="" alt="Lightbox image">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+      <div class="lightbox-nav">
+        <button onclick="changeImage(-1)" class="nav-btn prev">&#10094;</button>
+        <button onclick="changeImage(1)" class="nav-btn next">&#10095;</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer" id="about">
+    <div class="container">
+      <p>&copy; 2026 PhotoGallery. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#gallery">Gallery</a>
+        <a href="#categories">Categories</a>
+        <a href="#upload">Upload</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
